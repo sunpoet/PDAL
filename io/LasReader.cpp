@@ -70,6 +70,8 @@ void LasReader::addArgs(ProgramArgs& args)
     args.add("extra_dims", "Dimensions to assign to extra byte data",
         m_extraDimSpec);
     args.add("compression", "Decompressor to use", m_compression, "EITHER");
+    args.add("validate", "Perform some file validation as data is read",
+        m_validate);
 }
 
 
@@ -148,6 +150,7 @@ void LasReader::initializeLocal(PointTableRef table, MetadataNode& m)
     // Set case-corrected value.
     m_compression = compression;
     m_error.setFilename(m_filename);
+    m_error.setValidate(m_validate);
 
     m_error.setLog(log());
     m_header.setLog(log());

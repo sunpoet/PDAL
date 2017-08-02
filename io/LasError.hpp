@@ -44,11 +44,13 @@ namespace pdal
 class LasError
 {
 public:
-    LasError() : m_filename("<unknown>")
+    LasError() : m_filename("<unknown>"), m_validate(false)
     {}
 
     void setFilename(const std::string& filename)
         { m_filename = filename; }
+    void setValidate(bool validate)
+        { m_validate = validate; }
 
     void setLog(LogPtr log) { m_log = log; }
 
@@ -56,6 +58,8 @@ public:
     {
         static std::vector<int> warned;
 
+        if (!m_validate)
+            return;
         if (!Utils::contains(warned, returnNum))
         {
             warned.push_back(returnNum);
@@ -69,16 +73,20 @@ public:
     {
         static std::vector<int> warned;
 
+        if (!m_validate)
+            return;
         if (!Utils::contains(warned, numReturns))
         {
             warned.push_back(numReturns);
-            m_log->get(LogLevel::Warning) << m_filename << ": Found invalid value "
-                "of '" << numReturns << "' for point's number of returns.\n";
+            m_log->get(LogLevel::Warning) << m_filename <<
+                ": Found invalid value of '" << numReturns <<
+                "' for point's number of returns.\n";
         }
     }
 
 private:
     std::string m_filename;
+    bool m_validate;
     LogPtr m_log;
 };
 

@@ -120,6 +120,7 @@ private:
     StringList m_extraDimSpec;
     std::vector<ExtraDim> m_extraDims;
     std::string m_compression;
+    bool m_validate;
 
     virtual void addArgs(ProgramArgs& args);
     virtual void initialize(PointTableRef table)
